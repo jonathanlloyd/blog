@@ -3,10 +3,11 @@ languageCode = "en"
 title = "Jonathan Lloyd | Blog"
 theme = "hemingway"
 copyright = "&copy; Jonathan Lloyd 2018"
-disqusShortname = "shortname"
-googleAnalytics = ""
 
 [params]
+
+[params.metadata]
+description = "Programming fundamentals, experiences and opinions."
 
 [params.highlight]
 style = "github"
@@ -21,5 +22,5 @@ url = "https://twitter.com/lloydjonathan"
 fa_icon = "fa-twitter"
 
 [[params.social]]
-url = "/index.xml"
+url = "/blog/index.xml"
 fa_icon = "fa-rss"
