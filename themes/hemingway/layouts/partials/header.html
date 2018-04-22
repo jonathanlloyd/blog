@@ -3,6 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ .Title }}{{ if eq .IsHome false }} | {{ .Site.Title }}{{ end }}</title>
+<link rel="icon" href="{{ .Site.BaseURL }}/img/favicon.png?v=1.0">
 <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/style.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 {{ with .Site.Params.highlight.style }}
