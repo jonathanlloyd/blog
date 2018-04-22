@@ -4,8 +4,6 @@ set -o pipefail
 rev=$(git rev-parse --short HEAD)
 
 hugo
-echo "=======> Public DIR"
-ls public
 cp -r public deploy
 pushd deploy
 git init
