@@ -16,8 +16,9 @@ it work?
 
 # The Loopback Interface
 Network Interfaces are objects within the kernel that represent an entry point
-for the host on a particular network. They can be used to represent physical
-Network Interface Cards but they can also be virtualised for other purposes.
+for the host on a particular network for sending/receiving packets. They can be
+used to represent physical Network Interface Cards but they can also be
+virtualised for other purposes.
 
 The purpose of the loopback interface, `lo`, is to give the host the ability to
 efficiently send packets to itself. The kernel implements this by returning
@@ -25,21 +26,21 @@ packets straight back to the interface without going any deeper into the
 kernel's networking stack.
 
 When your server process binds to `127.0.0.1` it is bound to the `lo` Network
-Interface.  This is why you cannot connect to it from your local network - it's
-bound to the wrong interface!
+Interface.  This is why you cannot connect to it from your local network - the
+`lo` interface can only be reached from your local machine.
 
 # 0.0.0.0 Special Case
 If you can't connect to the server process from your local network when it is
 bound to `127.0.0.1`, what should you do instead? One option is to bind to your
-machine's address on your local network. However, it can be quite tedious
-to work out which interface is on the correct network and your machine's IP
-on that network.
+machine's address on your local network (`192.168.1.12` or whatever). However,
+it can be quite tedious to work out which interface is connected to your local
+network and the IP that has been assigned to that interface.
 
 Another option is to bind to an address that can be routed to from *all*
 Network Interfaces. This is what happens when you bind to `0.0.0.0`.
 
 `0.0.0.0` is a non-routable address that, by convention, will receive packets
-from every Network Interface on the host when you bind to it.
+from every Network Interface on the host.
 
-So, the next time you want to host something on your local network, remember
-to bind to `0.0.0.0`.
+So, the next time you want to host something on your local network, remember to
+bind to `0.0.0.0`.
