@@ -4,8 +4,10 @@
   <div class="container">
     {{ range sort .Paginator.Pages }}
     <article>
-      <h2 class="subtitle is-6">{{ .Date.Format "January 2, 2006" }}</h2>
-      <h1 class="title"><a href="{{ .Permalink }}">{{ .Title }}</a>{{ if .Draft }} ::Draft{{ end }}</h1>
+      <div class="article__header">
+        <h2 class="article__date">{{ .Date.Format "January 2, 2006" }}</h2>
+        <h1><a class="article__title" href="{{ .Permalink }}">{{ .Title }}</a>{{ if .Draft }} ::Draft{{ end }}</h1>
+      </div>
       <div class="content">
         {{ .Summary | plainify | safeHTML }}
         {{ if .Truncated }}
@@ -17,7 +19,9 @@
         </a>
         {{ end }}
       </div>
+      <p class="article__reading_time">Reading time: {{ .ReadingTime }} minutes</p>
     </article>
+    <hr class="index__hr"/>
     {{ end }}
   </div>
 </section>
