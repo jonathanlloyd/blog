@@ -1,4 +1,4 @@
-baseurl = "https://jonathanlloyd.github.io/blog"
+baseurl = "https://blog.thisisjonathan.com"
 languageCode = "en"
 title = "Jonathan Lloyd | Blog"
 theme = "hemingway"
@@ -22,5 +22,5 @@ url = "https://twitter.com/lloydjonathan"
 fa_icon = "fa-twitter"
 
 [[params.social]]
-url = "/blog/index.xml"
+url = "/index.xml"
 fa_icon = "fa-rss"
