@@ -131,4 +131,119 @@ If we want to be able to store our Python blog post objects in our database we w
 
 Worst of all, larger applications will have a wide variety of entities they need to represent and **we will have to do this work for each entity in our application**.
 
-What if we could write a program to automatically create a mapping between the object-oriented and relational representation of the entities in our program? This is an **Object Relational Mapper** (**ORM**)).
+What if we could write a program to automatically create a mapping between the object-oriented and relational representation of the entities in our program? This is an **Object Relational Mapper** (**ORM**).
+
+# What will we be building?
+
+Our ORM will consist of a small Python library that supports schema generation, storing data and querying data with filters and limits. When it's done, it should look something like this:
+
+## Schema Generation
+Given the following models:
+```python
+import myorm
+
+@myorm.model
+class User:
+    id = myorm.Field(
+        field_type=int,
+        primary_key=True,
+    )
+    username = myorm.Field(
+        field_type=str,
+    )
+
+    def __init__(self, id, username):
+        self.id = id
+        self.username = username
+
+
+@myorm.model
+class Comment:
+    id = myorm.Field(
+        field_type=int,
+        primary_key=True,
+    )
+    posted_at = myorm.Field(
+        field_type=datetime,
+    )
+    author = myorm.Field(
+        field_type=User,
+        relationship=myorm.ManyToOne('User.id'),
+    )
+    content = myorm.Field(
+        field_type=str,
+    )
+
+    def __init__(self, id, posted_at, author, content):
+        self.id = id
+        self.posted_at = posted_at
+        self.author = author
+        self.content = content
+
+
+@myorm.model
+class Post:
+    id = myorm.Field(
+        field_type=int,
+        primary_key=True,
+    )
+    posted_at = myorm.Field(
+        field_type=datetime,
+    )
+    author = myorm.Field(
+        field_type=User,
+        relationship=myorm.ManyToOne('User.id'),
+    )
+    title = myorm.Field(
+        field_type=str,
+    )
+    content = myorm.Field(
+        field_type=str,
+    )
+    comments = myorm.Field(
+        field_type=Comment,
+        relationship=myorm.OneToMany('Post.id'),
+    )
+
+    def __init__(self, id, posted_at, author, title, content, comments):
+        self.id = id
+        self.posted_at = posted_at
+        self.author = author
+        self.title = title
+        self.content = content
+        self.comments = comments
+```
+
+Our ORM should be able to generate the schema for the necessary sqlite tables:
+```python
+import myorm
+
+import models
+
+session = myorm.Session(engine=myorm.SqliteEngine('sqlite://dev.db'))
+session.create_table(model.User)
+session.create_table(model.Post)
+session.create_table(model.Comment)
+
+"""
+This should create a sqlite database with the schema in the introduction:
+
+CREATE TABLE user (
+    id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL
+);
+
+CREATE TABLE post (
+    id INTEGER PRIMARY KEY,
+    posted_at TEXT NOT NULL,
+    author_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+
+    FOREIGN KEY(author_id) REFERENCES user(id)
+);
+
+etc...
+"""
+
+```
